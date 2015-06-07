@@ -20,59 +20,39 @@ function MatchGame (canvas, images) {//se declaran las variables
     
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
-            self.jugador.click (event);         
+
+           if(self.objetos[0].click(event)){
+                console.log("0");
+
+           } else
+           if (self.objetos[1].click(event)) {
+                console.log("1");
+           }else
+           if(self.objetos[2].click(event)){
+                console.log("2");
+           }else
+           if(self.objetos[3].click(event)){
+                console.log("3");
+           }else
+           if (self.objetos[4].click(event)) {
+                console.log("4");
+           }else
+           if(self.objetos[5].click(event)){
+                console.log("5");
+           }
+            
+           
+           
+
         };
 
         this.canvas.onmousemove = function(event) {
-            self.jugador.move (event);
+            //self.jugador.move (event);
         };
 
         this.canvas.onmouseup = function(event) {    
-            self.jugador.unclick (event);
-            if (self.objetos[0].collide (self.jugador)){//se detectan las colisiones con el jugador
-                //console.log("el id es: " + self.objetos[0].id);
-                //console.log("el id del jugador es: " + self.jugador.id);
-                if(self.objetos[0].id === self.jugador.id){
-                    self.score += 10;
-                    console.log(self.score);
-                    //alert("Correcto!");
-                    //alert($('#myPopup').attr('class'));
-                     //$("[data-role=popup]").enhanceWithin().popup({
-                         $("#myPopup").enhanceWithin().popup({
-                            afterclose: function () {
-                                //$(this).remove();
-                            }
-                        }).popup("open");
-
-                }
-
-            } else if (self.objetos[1].collide (self.jugador)){
-                if(self.objetos[1].id != self.jugador.id){
-                    self.score -= 3;
-                    //alert("Vuelve a intentarlo!");
-                    $("#myPopup1").enhanceWithin().popup({
-                            afterclose: function () {
-                                //$(this).remove();
-                                self.initObjects();
-                            }
-                        }).popup("open");
-
-                    
-                }                
-            } else if (self.objetos[2].collide (self.jugador)){
-                if(self.objetos[2].id != self.jugador.id){
-                    self.score -= 3;
-                    //alert("Vuelve a intentarlo!");
-                    $("#myPopup1").enhanceWithin().popup({
-                            afterclose: function () {
-                                //$(this).remove();
-                                self.initObjects();
-                            }
-                        }).popup("open");
-
-                    
-                }
-            }
+            //self.jugador.unclick (event);
+            
         };   
     }
     
@@ -184,7 +164,7 @@ function MatchGame (canvas, images) {//se declaran las variables
         for (var i = 0; i < this.objetos.length; i++) {
             this.objetos[i].draw (this.ctx);    
         }
-        this.jugador.draw(this.ctx);
+        //this.jugador.draw(this.ctx);
     };
 }
 
