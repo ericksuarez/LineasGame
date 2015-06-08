@@ -17,26 +17,29 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.min = 0;
     this.hours = 0;
     this.espacioMedio;
-    self.linea;
-    this.bandera = false;
+    self.linea;    
     
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
 
-                 if (self.linea != null){
-                self.linea.x = event.clientX;
-                self.linea.y = event.clientY;
-               
+        if(self.objetos[0].click(event)||self.objetos[1].click(event)||self.objetos[2].click(event)||self.objetos[3].click(event)||self.objetos[4].click(event)||self.objetos[5].click(event)){    
+            if (self.linea == null){
+                console.log ('click 1');
+                self.linea = new GameObject(null, event.clientX, event.clientY, event.clientX, event.clientY);        
+            }   else{
+                self.objetos.push (self.linea);
+                self.linea = null;
+                console.log ('click 2');
             }
-           
-            
+
+        }
+
         };
 
         this.canvas.onmousemove = function(event) {
             if (self.linea != null){
                 self.linea.width = event.clientX;
-                self.linea.height = event.clientY;
-               
+                self.linea.height = event.clientY;               
             }
         };
 
@@ -83,7 +86,7 @@ function MatchGame (canvas, images) {//se declaran las variables
         this.objetos[5] = new GameObject(this.images[0], this.espacioMedio, y, this.rectW, this.rectH);
         y -= this.rectW+this.alto;
 
-         self.linea = new GameObject(null, null, null, null, null);
+        
         
     };
 
@@ -100,7 +103,6 @@ function MatchGame (canvas, images) {//se declaran las variables
     };
 
     this.setBackground = function() {
-        console.log ('Dibujando background');
         //this.ctx.save();
         this.ctx.clearRect(0, 0, this.cWidth, this.cHeight);
         this.ctx.fillStyle = "white";
@@ -130,7 +132,7 @@ function MatchGame (canvas, images) {//se declaran las variables
     };
 
     this.drawLine = function(){
-        console.log ('Dibujando linea');
+        //console.log ('Dibujando linea');
         if (self.linea != null){
             self.linea.draw (self.ctx);
         }

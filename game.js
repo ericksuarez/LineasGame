@@ -2,8 +2,7 @@ $(document).ready(function() {
 
 	//alert("Bienvenido al Juego");
 
-	console.log ((3>5) || (6<10));
-
+	
     var canvas = $("#canvas")[0];
   //  var popup = $("#myPopup");
     
