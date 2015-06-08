@@ -1,8 +1,14 @@
 function GameObject (object, x, y, width, height) {
 
     this.image = new Image ();
-    this.image.src = object.url;
-    this.id = object.id;
+    if (object != null){
+        this.image.src = object.url;
+        this.id = object.id;
+    }
+    else{
+        this.image = null;
+    }
+    
     this.x = x;
     this.y = y;
     this.width = width;
@@ -15,7 +21,19 @@ function GameObject (object, x, y, width, height) {
     var xoffset;
     var yoffset;
     this.draw = function(ctx) {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        if (this.image != null){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
+        else{
+
+            if(this.x != null){
+                ctx.beginPath(); 
+                ctx.moveTo(this.x,this.y);
+                ctx.lineTo( this.width, this.height);
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
     };
 
     this.click = function(evento) {

@@ -17,55 +17,27 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.min = 0;
     this.hours = 0;
     this.espacioMedio;
-    var posicion = $("1");
-    var position = posicion.position();
-    //var posicion = self.objetos[0].position();
-    //var position = $("1").position();
-    //var position = $("1").offset();
-   
+    self.linea;
+    this.bandera = false;
+    
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
 
-            //var posicion = $("1").position();            
-
-           if(self.objetos[0].click(event)){
-                console.log("0");
-                console.log(self.objetos[0].id);
-                
-                //$("button").click(function(){
-                 
-                 //alert(posicion);
-                 //console.log("top: " + self.posicion.position().top + "left: " + self.posicion.position().left);
-                 //console.log("top: " + self.posicion.top);
-                 //console.log($("1").position().top);
-                 //console.log("top: " + position.offset.top);
-                 console.log("top: " + self.position.top + "left: " + self.position.left);
-                  //  });
-
-           } else
-           if (self.objetos[1].click(event)) {
-                console.log("1");
-           }else
-           if(self.objetos[2].click(event)){
-                console.log("2");
-           }else
-           if(self.objetos[3].click(event)){
-                console.log("3");
-           }else
-           if (self.objetos[4].click(event)) {
-                console.log("4");
-           }else
-           if(self.objetos[5].click(event)){
-                console.log("5");
-           }
+                 if (self.linea != null){
+                self.linea.x = event.clientX;
+                self.linea.y = event.clientY;
+               
+            }
+           
             
-           
-           
-
         };
 
         this.canvas.onmousemove = function(event) {
-            //self.jugador.move (event);
+            if (self.linea != null){
+                self.linea.width = event.clientX;
+                self.linea.height = event.clientY;
+               
+            }
         };
 
         this.canvas.onmouseup = function(event) {    
@@ -110,6 +82,8 @@ function MatchGame (canvas, images) {//se declaran las variables
         
         this.objetos[5] = new GameObject(this.images[0], this.espacioMedio, y, this.rectW, this.rectH);
         y -= this.rectW+this.alto;
+
+         self.linea = new GameObject(null, null, null, null, null);
         
     };
 
@@ -126,18 +100,17 @@ function MatchGame (canvas, images) {//se declaran las variables
     };
 
     this.setBackground = function() {
-
-        this.ctx.save();
+        console.log ('Dibujando background');
+        //this.ctx.save();
+        this.ctx.clearRect(0, 0, this.cWidth, this.cHeight);
         this.ctx.fillStyle = "white";
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight);
         this.ctx.strokeStyle = "#000000";
         this.ctx.lineWidth = 3;
         this.ctx.strokeRect(0, 0, this.cWidth, this.cHeight);
-        this.ctx.restore();
+        //this.ctx.restore();
 
-        this.ctx.moveTo(150,40);
-        this.ctx.lineTo(200,300);
-        this.ctx.stroke();
+        
 
     };
 
@@ -155,6 +128,13 @@ function MatchGame (canvas, images) {//se declaran las variables
         self.ctx.fillText(text,this.espacio,this.rectH+200);
         self.ctx.fillText(time,this.espacio,this.rectH+240)
     };
+
+    this.drawLine = function(){
+        console.log ('Dibujando linea');
+        if (self.linea != null){
+            self.linea.draw (self.ctx);
+        }
+    }
 
     this.timer = function(){
 
@@ -176,16 +156,20 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.main = function() {
         //self.time ++;
         self.setBackground();
+       
         self.drawImages();
+        
         self.drawScore();
+         self.drawLine();
     };
 
     
 
     this.drawImages = function() {
         for (var i = 0; i < this.objetos.length; i++) {
-            this.objetos[i].draw (this.ctx);    
+            this.objetos[i].draw (self.ctx);    
         }
+        
         //this.jugador.draw(this.ctx);
     };
 }
