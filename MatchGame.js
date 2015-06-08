@@ -17,12 +17,30 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.min = 0;
     this.hours = 0;
     this.espacioMedio;
-    
+    var posicion = $("1");
+    var position = posicion.position();
+    //var posicion = self.objetos[0].position();
+    //var position = $("1").position();
+    //var position = $("1").offset();
+   
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
 
+            //var posicion = $("1").position();            
+
            if(self.objetos[0].click(event)){
                 console.log("0");
+                console.log(self.objetos[0].id);
+                
+                //$("button").click(function(){
+                 
+                 //alert(posicion);
+                 //console.log("top: " + self.posicion.position().top + "left: " + self.posicion.position().left);
+                 //console.log("top: " + self.posicion.top);
+                 //console.log($("1").position().top);
+                 //console.log("top: " + position.offset.top);
+                 console.log("top: " + self.position.top + "left: " + self.position.left);
+                  //  });
 
            } else
            if (self.objetos[1].click(event)) {
@@ -116,6 +134,10 @@ function MatchGame (canvas, images) {//se declaran las variables
         this.ctx.lineWidth = 3;
         this.ctx.strokeRect(0, 0, this.cWidth, this.cHeight);
         this.ctx.restore();
+
+        this.ctx.moveTo(150,40);
+        this.ctx.lineTo(200,300);
+        this.ctx.stroke();
 
     };
 
