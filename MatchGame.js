@@ -23,14 +23,33 @@ function MatchGame (canvas, images) {//se declaran las variables
         this.canvas.onmousedown = function(event) {
 
         if(self.objetos[0].click(event)||self.objetos[1].click(event)||self.objetos[2].click(event)||self.objetos[3].click(event)||self.objetos[4].click(event)||self.objetos[5].click(event)){    
+
+            
+            //console.log(self.objetos[].id);
             if (self.linea == null){
                 console.log ('click 1');
-                self.linea = new GameObject(null, event.clientX, event.clientY, event.clientX, event.clientY);        
+                self.linea = new GameObject(null, event.clientX, event.clientY, event.clientX, event.clientY);   
+                for ( i = 0; i<self.objetos.length; i++){
+                    if (self.objetos[i].clickInside (event.clientX, event.clientY)){
+                        console.log ('dio click en el id:'+ self.objetos[i].id);
+                    }
+                }     
             }   else{
-                self.objetos.push (self.linea);
-                self.linea = null;
                 console.log ('click 2');
+                self.objetos.push (self.linea);
+                for ( i = 0; i<self.objetos.length; i++){
+                    console.log ("revisando objeto: "+i);
+                    console.log (self.objetos[i]);
+                    if (self.objetos[i].clickInside (event.clientX, event.clientY)){
+                        console.log ('dio click en el id:'+ self.objetos[i].id);   
+                    }
+                } 
+                self.linea = null;
             }
+                
+                
+                
+            
 
         }
 
@@ -38,8 +57,8 @@ function MatchGame (canvas, images) {//se declaran las variables
 
         this.canvas.onmousemove = function(event) {
             if (self.linea != null){
-                self.linea.width = event.clientX;
-                self.linea.height = event.clientY;               
+                self.linea.setW (event.clientX);
+                self.linea.setH (event.clientY);  
             }
         };
 
@@ -64,6 +83,7 @@ function MatchGame (canvas, images) {//se declaran las variables
     };
 
     this.initObjects = function(){
+        
         x = this.espacioTop;
         y = this.espacioTop;
         
@@ -127,8 +147,8 @@ function MatchGame (canvas, images) {//se declaran las variables
 
         self.ctx.font = "20px Arial";
         self.ctx.fillStyle = "black";
-        self.ctx.fillText(text,this.espacio,this.rectH+200);
-        self.ctx.fillText(time,this.espacio,this.rectH+240)
+        self.ctx.fillText(text,this.espacio+200,this.rectH+200);
+        self.ctx.fillText(time,this.espacio+200,this.rectH+240)
     };
 
     this.drawLine = function(){

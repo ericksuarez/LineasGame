@@ -8,7 +8,7 @@ function GameObject (object, x, y, width, height) {
     else{
         this.image = null;
     }
-    
+    //console.log ("creando objeto: "+ object+" ("+x+","+y+")"+"("+width+","+height+")");
     this.x = x;
     this.y = y;
     this.width = width;
@@ -20,6 +20,29 @@ function GameObject (object, x, y, width, height) {
     var clickFlag = false;
     var xoffset;
     var yoffset;
+
+    this.clickInside = function ( x,  y){
+        /*console.log (x + ", "+ y);
+        console.log ("-"+self.x + ", "+ self.y);
+        console.log ("<"+this.x + ", "+ this.y);
+        console.log (">"+this.width + ", "+ this.height);*/
+        if ((x >= this.x) && (x <= this.x+this.width) && 
+            (y >= this.y) && (y <= this.y+this.height)){
+            return true;
+        }
+        return false;
+    }
+
+    this.setW = function (w){
+        this.width = w;
+        this.right = x+width;
+    }
+
+    this.setH = function (h){
+        this.height = h;
+        this.bottom = y+height;
+    }
+
     this.draw = function(ctx) {
         if (this.image != null){
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -37,7 +60,7 @@ function GameObject (object, x, y, width, height) {
     };
 
     this.click = function(evento) {
-        if (evento.clientX > this.x &&
+        if (    evento.clientX > this.x &&
                 evento.clientX < (this.x + this.width) &&
                 evento.clientY > this.y &&
                 evento.clientY < (this.y + this.height)
