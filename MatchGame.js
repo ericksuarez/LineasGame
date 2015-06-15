@@ -18,6 +18,8 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.hours = 0;
     this.espacioMedio;
     self.linea;    
+    this.id1;
+    this.id2;
     
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
@@ -32,16 +34,43 @@ function MatchGame (canvas, images) {//se declaran las variables
                 for ( i = 0; i<self.objetos.length; i++){
                     if (self.objetos[i].clickInside (event.clientX, event.clientY)){
                         console.log ('dio click en el id:'+ self.objetos[i].id);
+                        self.id1 = self.objetos[i].id;
+                        console.log(self.id1);
                     }
                 }     
             }   else{
                 console.log ('click 2');
                 self.objetos.push (self.linea);
                 for ( i = 0; i<self.objetos.length; i++){
-                    console.log ("revisando objeto: "+i);
-                    console.log (self.objetos[i]);
+                    //console.log ("revisando objeto: "+i);
+                    //console.log (self.objetos[i]);
                     if (self.objetos[i].clickInside (event.clientX, event.clientY)){
                         console.log ('dio click en el id:'+ self.objetos[i].id);   
+                        self.id2 = self.objetos[i].id;
+                        console.log(self.id2);
+                        if(self.id1 == self.id2){
+                            console.log("son iguales");
+                            self.score += 10;
+
+                             $("#myPopup").enhanceWithin().popup({
+                            afterclose: function () {
+                                //$(this).remove();
+                            }
+
+                        }).popup("open");
+                        }else
+                        if(self.id1 != self.id2){
+                            console.log("no son iguales");
+                            self.score -= 3;
+
+                            $("#myPopup1").enhanceWithin().popup({
+                            afterclose: function () {
+                                //$(this).remove();
+                                self.initObjects();
+                            }
+                        }).popup("open");
+
+                        }
                     }
                 } 
                 self.linea = null;
