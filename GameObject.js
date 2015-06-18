@@ -4,6 +4,7 @@ function GameObject (object, x, y, width, height) {
     if (object != null){
         this.image.src = object.url;
         this.id = object.id;
+        this.linea = object.linea;
     }
     else{
         this.image = null;

@@ -1,5 +1,5 @@
 
-function MatchGame (canvas, images) {//se declaran las variables
+function MatchGame (canvas, images, lineas) {//se declaran las variables
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.cWidth;
@@ -8,8 +8,10 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.rectW;
     this.rectH; 
     this.objetos = [];
+    this.lines = [];
     this.jugador;
     this.espacio;
+    this.lineas = lineas;
     this.images = images;
     var self = this;
     this.score = 0;
@@ -20,71 +22,75 @@ function MatchGame (canvas, images) {//se declaran las variables
     self.linea;    
     this.id1;
     this.id2;
+
     
     this.registerEvents = function (){//aqui van los eventos que se van a utilizar
         this.canvas.onmousedown = function(event) {
-
+            console.log ("OnMouseDown");
         if(self.objetos[0].click(event)||self.objetos[1].click(event)||self.objetos[2].click(event)||self.objetos[3].click(event)||self.objetos[4].click(event)||self.objetos[5].click(event)){    
 
-            
-            //console.log(self.objetos[].id);
+
             if (self.linea == null){
-                console.log ('click 1');
-                self.linea = new GameObject(null, event.clientX, event.clientY, event.clientX, event.clientY);   
                 for ( i = 0; i<self.objetos.length; i++){
                     if (self.objetos[i].clickInside (event.clientX, event.clientY)){
-                        console.log ('dio click en el id:'+ self.objetos[i].id);
-                        self.id1 = self.objetos[i].id;
-                        console.log(self.id1);
+                        if(self.objetos[i].linea == null){                            
+                            self.objetos[i].linea = 1 ; 
+                            self.linea = new GameObject(null, event.clientX, event.clientY, event.clientX, event.clientY);
+                            self.id1 = self.objetos[i].id;
+                            self.obj1 = self.objetos[i];
+                            console.log ("obj1:"+self.objetos[i].id);
+                        }
                     }
                 }     
-            }   else{
-                console.log ('click 2');
-                self.objetos.push (self.linea);
+            }else{                    
                 for ( i = 0; i<self.objetos.length; i++){
-                    //console.log ("revisando objeto: "+i);
-                    //console.log (self.objetos[i]);
+                    console.log(i);
                     if (self.objetos[i].clickInside (event.clientX, event.clientY)){
-                        console.log ('dio click en el id:'+ self.objetos[i].id);   
-                        self.id2 = self.objetos[i].id;
-                        console.log(self.id2);
-                        if(self.id1 == self.id2){
-                            console.log("son iguales");
-                            self.score += 10;
+                        if(self.objetos[i].linea == null){
+                            self.objetos[i].linea = 1;
+                            self.obj2 = self.objetos[i];
+                            console.log ("obj2:"+self.objetos[i].id);
+                            self.lines.push (self.linea);
+                            self.id2 = self.objetos[i].id;
+                            if(self.id1 == self.id2){
+                                self.score += 10;
+                                $("#myPopup").enhanceWithin().popup({
+                                    afterclose: function () {
+                                    //$(this).remove();
+                                    }
+                                }).popup("open");
+                            }else {        
 
-                             $("#myPopup").enhanceWithin().popup({
-                            afterclose: function () {
-                                //$(this).remove();
-                            }
-
-                        }).popup("open");
-                        }else
-                        if(self.id1 != self.id2){
-                            console.log("no son iguales");
-                            self.score -= 3;
-
-                            $("#myPopup1").enhanceWithin().popup({
-                            afterclose: function () {
-                                //$(this).remove();
-                                self.initObjects();
-                            }
-                        }).popup("open");
-
+                                self.score -= 3;
+                                $("#myPopup1").enhanceWithin().popup({
+                                    afterclose: function () {
+                                    //$(this).remove();
+                                        
+                                    }
+                                }).popup("open");      
+                                
+                                //self.initObjects();  
+                                self.lines.splice(self.lines.length-1);                    
+                                self.drawLines();
+                                console.log ("Eliminando lineas de:");
+                                console.log ("obj1:"+self.obj1.id);
+                                console.log ("obj2:"+self.obj2.id);
+                                self.obj2.linea = null;
+                                self.obj1.linea = null;
+                                break;
+                             }
+                        } else{
+                        self.obj1.linea = null;
                         }
                     }
                 } 
                 self.linea = null;
             }
-                
-                
-                
-            
-
         }
 
-        };
+    };
 
-        this.canvas.onmousemove = function(event) {
+    this.canvas.onmousemove = function(event) {
             if (self.linea != null){
                 self.linea.setW (event.clientX);
                 self.linea.setH (event.clientY);  
@@ -207,14 +213,19 @@ function MatchGame (canvas, images) {//se declaran las variables
     this.main = function() {
         //self.time ++;
         self.setBackground();
-       
         self.drawImages();
-        
+        self.drawLines();
         self.drawScore();
-         self.drawLine();
+        self.drawLine();
     };
 
     
+    this.drawLines = function(){
+
+        for(i=0; i<this.lines.length; i++){
+            this.lines[i].draw(self.ctx);
+        }
+    }
 
     this.drawImages = function() {
         for (var i = 0; i < this.objetos.length; i++) {
